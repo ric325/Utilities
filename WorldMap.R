@@ -7,9 +7,8 @@ lonlatCRS <- "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
 
 
 # Download and process world outline
-world <- ne_countries(scale = "medium", returnclass = "sf")
-world_sf <- st_transform(world, crs = st_crs(robCRS)) # Convert to different CRS
-
+world <- ne_countries(scale = "medium", returnclass = "sf") %>% # Load world outline as sf
+  st_transform(crs = st_crs(robCRS)) # Convert to different CRS
 
 df <- tibble(lat = c(-34, -42, 20, 0), lon = c(156, 100, -20, -160), weight = c(1, 2, 3, 4)) %>%  # Create some dummy data
   st_as_sf(coords = c("lon", "lat"), crs = st_crs(lonlatCRS)) %>% # Convert to an sf object
@@ -17,7 +16,7 @@ df <- tibble(lat = c(-34, -42, 20, 0), lon = c(156, 100, -20, -160), weight = c(
 
 gg <- ggplot() +
   geom_sf(data = df, aes(colour = weight)) +
-  geom_sf(data = world_sf, size = 0.05, fill = "grey20") +
+  geom_sf(data = world, size = 0.05, fill = "grey20") +
   ggtitle("World Map with Robinson Projection") +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0)) +

@@ -1,2 +1,2 @@
 # Utilities
- Useful utilities
+ A collection of useful code snippets
